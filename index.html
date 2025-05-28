@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robô Futurista Abstrato</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            padding: 20px;
+            max-width: 1200px;
+        }
+
+        .title {
+            text-align: center;
+            color: white;
+            text-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+            animation: title-glow 3s infinite alternate;
+        }
+
+        .title h1 {
+            font-size: 3.5rem;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            font-weight: 300;
+            text-transform: uppercase;
+        }
+
+        .title p {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .robot-container {
+            position: relative;
+            width: 350px;
+            height: 500px;
+        }
+
+        /* Base do robô */
+        .robot {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 20px rgba(0, 200, 255, 0.5));
+        }
+
+        /* Cabeça */
+        .head {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 120px;
+            background: linear-gradient(135deg, #00dbde, #fc00ff);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            z-index: 10;
+            animation: head-float 5s infinite ease-in-out;
+        }
+
+        /* Olhos */
+        .eye {
+            position: absolute;
+            width: 30px;
+            height: 40px;
+            background: radial-gradient(circle, #ffffff, #00ffff);
+            border-radius: 50%;
+            top: 45px;
+            box-shadow: 0 0 15px #00ffff, 0 0 30px #00ffff;
+            animation: eye-pulse 2s infinite alternate;
+        }
+
+        .left-eye {
+            left: 35px;
+        }
+
+        .right-eye {
+            right: 35px;
+        }
+
+        /* Antena */
+        .antenna {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 40px;
+            background: linear-gradient(to bottom, #fc00ff, #00dbde);
+            border-radius: 4px;
+        }
+
+        .antenna::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, #ff00c8, transparent 70%);
+            border-radius: 50%;
+            animation: antenna-pulse 3s infinite alternate;
+        }
+
+        /* Corpo */
+        .body {
+            position: absolute;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 180px;
+            height: 180px;
+            background: linear-gradient(45deg, #ff00cc, #333399);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            z-index: 5;
+            animation: body-float 4s infinite ease-in-out;
+        }
+
+        /* Detalhes do corpo */
+        .body-detail {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, transparent, rgba(0, 255, 255, 0.3));
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        }
+
+        /* Braços */
+        .arm {
+            position: absolute;
+            width: 30px;
+            height: 160px;
+            top: 140px;
+            background: linear-gradient(to bottom, #ff00cc, #00dbde);
+            z-index: 4;
+            animation: arm-swing 6s infinite ease-in-out;
+        }
+
+        .left-arm {
+            left: 20px;
+            clip-path: polygon(0 0, 100% 15%, 100% 85%, 0 100%);
+            transform-origin: top center;
+        }
+
+        .right-arm {
+            right: 20px;
+            clip-path: polygon(0 15%, 100% 0, 100% 100%, 0 85%);
+            transform-origin: top center;
+            animation-delay: -3s;
+        }
+
+        /* Pernas */
+        .leg {
+            position: absolute;
+            width: 40px;
+            height: 180px;
+            top: 270px;
+            background: linear-gradient(to bottom, #00dbde, #fc00ff);
+            z-index: 3;
+            animation: leg-swing 7s infinite ease-in-out;
+        }
+
+        .left-leg {
+            left: 80px;
+            clip-path: polygon(0 0, 100% 20%, 100% 100%, 0 100%);
+        }
+
+        .right-leg {
+            right: 80px;
+            clip-path: polygon(0 20%, 100% 0, 100% 100%, 0 100%);
+            animation-delay: -3.5s;
+        }
+
+        /* Base flutuante */
+        .base {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 220px;
+            height: 30px;
+            background: linear-gradient(90deg, #00dbde, #fc00ff);
+            clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%);
+            border-radius: 5px;
+            box-shadow: 0 0 20px rgba(0, 200, 255, 0.7);
+            animation: base-glow 4s infinite alternate;
+        }
+
+        /* Partículas flutuantes */
+        .particle {
+            position: absolute;
+            background: radial-gradient(circle, #00ffff, transparent 70%);
+            border-radius: 50%;
+            filter: blur(2px);
+            animation: float 15s infinite linear;
+        }
+
+        /* Animações */
+        @keyframes head-float {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        @keyframes body-float {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(5px); }
+        }
+
+        @keyframes arm-swing {
+            0%, 100% { transform: rotate(5deg); }
+            50% { transform: rotate(-5deg); }
+        }
+
+        @keyframes leg-swing {
+            0%, 100% { transform: translateY(0) rotate(2deg); }
+            50% { transform: translateY(-5px) rotate(-2deg); }
+        }
+
+        @keyframes eye-pulse {
+            0% { box-shadow: 0 0 15px #00ffff, 0 0 30px #00ffff; }
+            100% { box-shadow: 0 0 25px #00ffff, 0 0 50px #00ffff; }
+        }
+
+        @keyframes antenna-pulse {
+            0% { transform: translateX(-50%) scale(0.8); opacity: 0.7; }
+            100% { transform: translateX(-50%) scale(1.2); opacity: 1; }
+        }
+
+        @keyframes base-glow {
+            0% { box-shadow: 0 0 20px rgba(0, 200, 255, 0.7); }
+            100% { box-shadow: 0 0 40px rgba(255, 0, 255, 0.9); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(20px); opacity: 0; }
+        }
+
+        @keyframes title-glow {
+            0% { text-shadow: 0 0 15px rgba(0, 255, 255, 0.7); }
+            100% { text-shadow: 0 0 25px rgba(255, 0, 255, 0.9); }
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .title h1 {
+                font-size: 2.5rem;
+            }
+            
+            .robot-container {
+                transform: scale(0.8);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .title h1 {
+                font-size: 2rem;
+            }
+            
+            .robot-container {
+                transform: scale(0.7);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">
+            <h1>Robô Futurista Abstrato</h1>
+            <p>Uma criação usando clip-path, gradientes e animações CSS</p>
+        </div>
+        
+        <div class="robot-container">
+            <div class="robot">
+                <div class="head">
+                    <div class="antenna"></div>
+                    <div class="eye left-eye"></div>
+                    <div class="eye right-eye"></div>
+                </div>
+                <div class="body">
+                    <div class="body-detail"></div>
+                </div>
+                <div class="arm left-arm"></div>
+                <div class="arm right-arm"></div>
+                <div class="leg left-leg"></div>
+                <div class="leg right-leg"></div>
+                <div class="base"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Criar partículas flutuantes
+        document.addEventListener('DOMContentLoaded', function() {
+            const body = document.querySelector('body');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Tamanho e posição aleatórios
+                const size = Math.random() * 20 + 5;
+                const posX = Math.random() * window.innerWidth;
+                const posY = Math.random() * window.innerHeight + window.innerHeight;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}px`;
+                particle.style.top = `${posY}px`;
+                
+                // Duração e atraso aleatórios para animação
+                const duration = Math.random() * 20 + 10;
+                const delay = Math.random() * 5;
+                particle.style.animationDuration = `${duration}s`;
+                particle.style.animationDelay = `${delay}s`;
+                
+                body.appendChild(particle);
+            }
+        });
+    </script>
+</body>
+</html>
